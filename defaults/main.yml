@@ -1,0 +1,19 @@
+---
+# defaults file for fichie23.mtail
+GOROOT: /usr/local/go
+GOPATH: "{{ ansible_env.HOME }}/go"
+
+nginx_mtail_template: nginx.mtail.j2
+nginx_mtail_file_path: /etc/mtail.d/nginx.mtail
+
+nginx_mtail_log_format_template: log-format.conf.j2
+nginx_mtail_log_format_file_path: /etc/nginx/conf.d/log-format.conf
+
+mtail_progs_directory_path: /etc/mtail.d
+mtail_tailed_logs_path: /var/log/nginx/combined.access_log
+mtail_port: 3093
+mtail_logs_directory_path : /etc/mtail.d/logs
+mtail_logs_path : /etc/mtail.d/logs/mtail.logs
+mtail_counter_http_requests_total_by: [vhost, method, path, code, content_type]
+mtail_counter_http_request_duration_by: [vhost, method, path, code, content_type]
+mtail_counter_http_response_size_by: [vhost, method, path, code, content_type]

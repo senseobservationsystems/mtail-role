@@ -1,0 +1,24 @@
+---
+# tasks file for fichie23.mtail
+- include: setup-mtail.yml
+
+- name: 'Create mtail progs directory '
+  file: 'path={{mtail_progs_directory_path}} state=directory'
+- name: 'Create mtail logs directory '
+  file: 'path={{mtail_logs_directory_path}} state=directory'
+- name: 'Create mtail logs directory '
+  file: 'path={{mtail_logs_path}} state=touch'
+- name: Copy nginx.mtail configuration in place.
+  template:
+    src: "{{ nginx_mtail_template }}"
+    dest: "{{ nginx_mtail_file_path }}"
+    owner: root
+    group: root
+    mode: 0644
+- name: Copy mtail logs format nginx configuration in place.
+  template:
+    src: "{{ nginx_mtail_log_format_template }}"
+    dest: "{{ nginx_mtail_log_format_file_path }}"
+    owner: root
+    group: root
+    mode: 0644

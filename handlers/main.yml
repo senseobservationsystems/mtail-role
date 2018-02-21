@@ -1,0 +1,4 @@
+---
+# handlers file for fichie23.mtail
+- name: restart mtail
+  command: "pkill -f mtail && nohup mtail -v=2 -logtostderr -port {{ mtail_port }} -progs {{ mtail_progs_directory_path }} -logs {{ mtail_tailed_logs_path }} > {{ mtail_logs_path }} 2>&1 &"

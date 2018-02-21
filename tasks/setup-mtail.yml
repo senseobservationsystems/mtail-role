@@ -1,0 +1,37 @@
+- name: 'Create mtail path '
+  file: path={{ GOPATH }}/src/github.com/google/ state=directory
+- name: 'Check mtail is exist'
+  stat: path={{ GOPATH }}/src/github.com/google/mtail
+  register: mtail_repo
+- name: 'Updating mtail'
+  command: chdir={{ GOPATH }}/src/github.com/google/mtail/mtail git pull
+  when: mtail_repo.stat.exists
+- name: 'Cloning mtail {{ ansible_env.USER }}' 
+  command: chdir={{ GOPATH }}/src/github.com/google/ git clone https://github.com/google/mtail.git
+  when: not mtail_repo.stat.exists
+- name: 'Create go symlink'
+  file:
+    src: /usr/local/go/bin/go
+    dest: /usr/bin/go
+    state: link
+- name: 'Download goyacc'
+  command: go get golang.org/x/tools/cmd/goyacc
+- name: 'Create goyacc symlink'
+  file:
+    src: '{{ GOPATH }}/bin/goyacc'
+    dest: /usr/bin/goyacc
+    state: link
+- name: 'Clean dependencies'
+  file:
+    path: '{{ GOPATH }}/src/github.com/google/mtail/.dep-stamp'
+    state: absent
+- name: 'Build mtail'
+  command: chdir={{ GOPATH }}/src/github.com/google/mtail/ make
+- name: 'Copy binary'
+  copy:
+    remote_src: true
+    src: '{{ GOPATH }}/bin/mtail'
+    dest: /usr/local/bin/mtail
+    mode: 0755
+
+
